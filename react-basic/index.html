@@ -15,24 +15,30 @@
     // react 비교 문법
     const root = document.getElementById("root");
     // const h3 = React.createElement("h3", null, "hello im a span");
-    const Title = () => <h3>Title</h3>;
-    const Button = () => {
-      return <button onclick={() => console.log("clicked")}>Click me</button>;
-    };
+    // const Title = () => <h3>Title</h3>;
+    // const Button = () => {
+    //   // return <button onclick={() => console.log("clicked")}>Click me</button>;
+    // };
     // const button = React.createElement(
     //   "button",
     //   { id: "btn", onclick: () => console.log("i am Clicked") },
     //   "click me"
     // );
-    const Container = () => {
-      return (
-        <div>
-          <Title />
-          <Button />
-        </div>
-      );
-    };
-
+    let counter = 0;
+    function countUp() {
+      counter += 1;
+      render();
+    }
+    function render() {
+      // 새로고침
+      ReactDOM.render(<Container />, root);
+    }
+    const Container = () => (
+      <div>
+        <h3>Title : {counter}</h3>
+        <button onClick={countUp}>Click me</button>
+      </div>
+    );
     // const container = React.createElement("div", null, [span, button]);
     ReactDOM.render(<Container />, root);
   </script>
