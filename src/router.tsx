@@ -2,17 +2,13 @@ import { createBrowserRouter, BrowserRouter, Routes, Route } from "react-router-
 import Coin from "./routes/Coin";
 import Coins from "./routes/Coins";
 
-const Router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Coins />,
-    children: [
-      {
-        path: "/:coinId",
-        element: <Coin />,
-      },
-    ],
-  },
-]);
-
-export default Router;
+export default function Router() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/coin/:coinId" element={<Coin />}></Route>
+        <Route path="/" element={<Coins />}></Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
