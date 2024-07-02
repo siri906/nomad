@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { useLocation, Outlet, Link, useMatch } from "react-router-dom";
 import axios from "axios";
 import { CoinInfoData, CoinPriceData } from "../types/CoinInfo";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCoinInfo } from "../api";
 
 interface RouteState {
   state: {
@@ -84,23 +86,30 @@ function Coin() {
   const [priceInfo, setpriceInfo] = useState<CoinPriceData>();
   const { coinId } = useParams();
   //Coins Link 에서 전달 받은 state
+
   //as 문법 알아보기
   //링크 클릭했을때 값을 받아 오므로 처음부터 해당 url 에 접속하면 데이터를 받아 올수 없음
   let { state } = useLocation() as RouteState;
   const priceMatch = useMatch("/coin/:coinId/price");
   const chartMatch = useMatch("/coin/:coinId/chart");
 
-  const getCoinInfo = async () => {
-    const resInfoData = await axios(`https://api.coinpaprika.com/v1/coins/${coinId}`);
-    const resPriceData = await axios(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
-    setInfo(resInfoData.data);
-    setpriceInfo(resPriceData.data);
-    setLoading(false);
-  };
+  // react query 이전
+  // const getCoinInfo = async () => {
+  //   const resInfoData = await axios(`https://api.coinpaprika.com/v1/coins/${coinId}`);
+  //   const resPriceData = await axios(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
+  //   setInfo(resInfoData.data);
+  //   setpriceInfo(resPriceData.data);
+  //   setLoading(false);
+  // };
 
-  useEffect(() => {
-    getCoinInfo();
-  }, []);
+  const { isLoading, data } = useQuery({
+    queryKey: ["CoinInfo", coinId],
+    queryFn: fetchCoinInfo(coinId),
+  });
+
+  // useEffect(() => {
+  //   // getCoinInfo();
+  // }, []);
 
   return (
     <Container>

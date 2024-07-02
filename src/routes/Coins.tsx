@@ -1,7 +1,8 @@
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoins } from "../api";
 
 const Container = styled.div`
   padding: 20px;
@@ -64,37 +65,45 @@ interface CoinInterFace {
 }
 
 export default function Coins() {
-  const [coins, setCoins] = useState<CoinInterFace[]>([]);
-  const [loading, setLoading] = useState(true);
+  // const [coins, setCoins] = useState<CoinInterFace[]>([]);
+  // const [loading, setLoading] = useState(true);
 
-  const getCoin = async () => {
-    const res = await axios(`https://api.coinpaprika.com/v1/coins`);
-    setCoins(res.data.slice(0, 100));
-    setLoading(false);
-  };
+  // react query이전에 사용했던 소스 ======================
+  // const getCoin = async () => {
+  //   const res = await axios(`https://api.coinpaprika.com/v1/coins`);
+  //   setCoins(res.data.slice(0, 100));
+  //   setLoading(false);
+  // };
+  //==================================================================
 
-  useEffect(() => {
-    // fetch 방법
-    // (async () => {
-    //   const res = await fetch(`https://api.coinpaprika.com/v1/coins`);
-    //   const json = await res.json();
-    //   console.log(json);
-    //   setCoins(json.slice(0,100))
-    // })();
+  // react Query
+  const { isLoading, data: coins } = useQuery<CoinInterFace[]>({
+    queryKey: ["allCoins"],
+    queryFn: fetchCoins,
+    select: (data) => data.slice(0, 100),
+  });
 
-    // axios 방법
-    getCoin();
-  }, []);
+  // useEffect(() => {
+  //   // fetch 방법
+  //   // (async () => {
+  //   //   const res = await fetch(`https://api.coinpaprika.com/v1/coins`);
+  //   //   const json = await res.json();
+  //   //   console.log(json);
+  //   //   setCoins(json.slice(0,100))
+  //   // })();
+  //   // axios 방법
+  //   // getCoin();
+  // }, []);
   return (
     <Container>
       <Header>
         <Title>Coin</Title>
       </Header>
       <CoinsList>
-        {loading ? (
+        {isLoading ? (
           <Loader>Loading...</Loader>
         ) : (
-          coins.map((coin) => {
+          coins?.map((coin) => {
             return (
               <Coin key={coin.id}>
                 <Link

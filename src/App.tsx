@@ -1,6 +1,7 @@
 import Router from "./Router";
 import { createGlobalStyle } from "styled-components";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -75,6 +76,7 @@ export default function App() {
       </HelmetProvider>
       <GlobalStyle />
       <Router />
+      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 }
