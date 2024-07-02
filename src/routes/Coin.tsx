@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, Outlet } from "react-router-dom";
 import axios from "axios";
 import { CoinInfoData, CoinPriceData } from "../types/CoinInfo";
+import Price from "./Price";
 
 interface RouteState {
   state: {
@@ -79,11 +80,10 @@ function Coin() {
     getCoinInfo();
   }, []);
 
-  console.log(state, "state");
   return (
     <Container>
       <Header>
-        <Title>{coinId}</Title>
+        <Title> {state?.name ? state.name : loading ? "Loading..." : info?.name}</Title>
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>
@@ -114,6 +114,7 @@ function Coin() {
               <span>{priceInfo?.max_supply}</span>
             </OverviewItem>
           </Overview>
+          <Outlet />
         </>
       )}
     </Container>
