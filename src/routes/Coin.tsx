@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { useLocation, Outlet } from "react-router-dom";
+import { useLocation, Outlet, Link, useMatch } from "react-router-dom";
 import axios from "axios";
 import { CoinInfoData, CoinPriceData } from "../types/CoinInfo";
-import Price from "./Price";
 
 interface RouteState {
   state: {
@@ -58,6 +57,27 @@ const Description = styled.p`
   margin: 20px 0px;
 `;
 
+const Tabs = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 25px 0px;
+  gap: 10px;
+`;
+
+const Tab = styled.span<{ isActive: boolean }>`
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 7px 0px;
+  border-radius: 10px;
+  a {
+    display: block;
+    color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
+  }
+`;
+
 function Coin() {
   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<CoinInfoData>();
@@ -67,6 +87,8 @@ function Coin() {
   //as 문법 알아보기
   //링크 클릭했을때 값을 받아 오므로 처음부터 해당 url 에 접속하면 데이터를 받아 올수 없음
   let { state } = useLocation() as RouteState;
+  const priceMatch = useMatch("/coin/:coinId/price");
+  const chartMatch = useMatch("/coin/:coinId/chart");
 
   const getCoinInfo = async () => {
     const resInfoData = await axios(`https://api.coinpaprika.com/v1/coins/${coinId}`);
@@ -114,6 +136,15 @@ function Coin() {
               <span>{priceInfo?.max_supply}</span>
             </OverviewItem>
           </Overview>
+
+          <Tabs>
+            <Tab isActive={chartMatch !== null}>
+              <Link to={`/coin/${coinId}/chart`}>Chart</Link>
+            </Tab>
+            <Tab isActive={priceMatch !== null}>
+              <Link to={`/coin/${coinId}/price`}>Price</Link>
+            </Tab>
+          </Tabs>
           <Outlet />
         </>
       )}
