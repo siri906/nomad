@@ -5,7 +5,7 @@ import { useLocation, Outlet, Link, useMatch } from "react-router-dom";
 import axios from "axios";
 import { CoinInfoData, CoinPriceData } from "../types/CoinInfo";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCoinInfo } from "../api";
+import { fetchCoinInfo, fetchCoinTickers } from "../api";
 
 interface RouteState {
   state: {
@@ -81,9 +81,9 @@ const Tab = styled.span<{ isActive: boolean }>`
 `;
 
 function Coin() {
-  const [loading, setLoading] = useState(true);
-  const [info, setInfo] = useState<CoinInfoData>();
-  const [priceInfo, setpriceInfo] = useState<CoinPriceData>();
+  // const [loading, setLoading] = useState(true);
+  // const [info, setInfo] = useState<CoinInfoData>();
+  // const [priceInfo, setpriceInfo] = useState<CoinPriceData>();
   const { coinId } = useParams();
   //Coins Link 에서 전달 받은 state
 
@@ -102,9 +102,14 @@ function Coin() {
   //   setLoading(false);
   // };
 
-  const { isLoading, data } = useQuery({
-    queryKey: ["CoinInfo", coinId],
-    queryFn: fetchCoinInfo(coinId),
+  const { isLoading, data: info } = useQuery({
+    queryKey: ["coinInfo", coinId],
+    queryFn: () => fetchCoinInfo(coinId),
+  });
+
+  const { isLoading: coinTickersLoading, data: priceInfo } = useQuery({
+    queryKey: ["coinInfo", coinId],
+    queryFn: () => fetchCoinTickers(coinId),
   });
 
   // useEffect(() => {
@@ -114,9 +119,9 @@ function Coin() {
   return (
     <Container>
       <Header>
-        <Title> {state?.name ? state.name : loading ? "Loading..." : info?.name}</Title>
+        <Title> {state?.name ? state.name : isLoading ? "Loading..." : info?.name}</Title>
       </Header>
-      {loading ? (
+      {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
