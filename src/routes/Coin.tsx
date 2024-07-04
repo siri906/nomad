@@ -102,19 +102,17 @@ function Coin() {
   //   setLoading(false);
   // };
 
-  const { isLoading, data: info } = useQuery({
+  const { isLoading: coinInfoLoading, data: info } = useQuery({
     queryKey: ["coinInfo", coinId],
     queryFn: () => fetchCoinInfo(coinId),
   });
 
   const { isLoading: coinTickersLoading, data: priceInfo } = useQuery({
-    queryKey: ["coinInfo", coinId],
+    queryKey: ["coinPriceInfo", coinId],
     queryFn: () => fetchCoinTickers(coinId),
   });
 
-  // useEffect(() => {
-  //   // getCoinInfo();
-  // }, []);
+  const isLoading = coinInfoLoading || coinTickersLoading;
 
   return (
     <Container>

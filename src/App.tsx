@@ -1,4 +1,4 @@
-import Router from "./Router";
+import Router from "./router";
 import { createGlobalStyle } from "styled-components";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
