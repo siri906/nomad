@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import { useLocation, Outlet, Link, useMatch } from "react-router-dom";
-import axios from "axios";
-import { CoinInfoData, CoinPriceData } from "../types/CoinInfo";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 

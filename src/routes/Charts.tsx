@@ -2,7 +2,6 @@ import { useOutletContext } from "react-router-dom";
 import { fetchChartData } from "../api";
 import { useQuery } from "@tanstack/react-query";
 import ReactApexChart from "react-apexcharts";
-import { ApexOptions } from "apexcharts";
 
 interface ChartProps {
   coinId: string;
