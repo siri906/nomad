@@ -16,15 +16,14 @@ export const fetchCoinTickers = async (coinId: string | undefined) => {
 
 export const fetchChartData = async (coinId: string | undefined) => {
   // floor => 내림, ceil => 올림
-  const endDate = Math.floor(Date.now() / 1000);
-  const startDate = endDate - 60 * 60 * 24 * 7;
-  console.log(Date.now());
+  // const endDate = Math.floor(Date.now() / 1000);
+  // const startDate = endDate - 60 * 60 * 24;
   return await axios
-    .get(`${BASE_URL}/coins/${coinId}/ohlcv/historical`, {
-      params: {
-        start: startDate,
-        end: endDate,
-      },
+    .get(`https://ohlcv-api.nomadcoders.workers.dev?coinId=${coinId}`, {
+      // params: {
+      //   start: startDate,
+      //   end: endDate,
+      // },
     })
     .then((res) => res.data);
 };
