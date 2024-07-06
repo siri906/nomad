@@ -69,8 +69,6 @@ a {
 `;
 
 export default function App() {
-  const [isDark, setIsDark] = useState(false);
-  const toggleDark = () => setIsDark((prev) => !prev);
   return (
     <>
       <HelmetProvider>
@@ -78,12 +76,9 @@ export default function App() {
           <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" />
         </Helmet>
       </HelmetProvider>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <button onClick={toggleDark}>Toggle mode</button>
-        <GlobalStyle />
-        <Router />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </ThemeProvider>
+      <GlobalStyle />
+      <Router />
+      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 }
