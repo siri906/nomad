@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atom";
 
 const Container = styled.div`
   padding: 20px;
@@ -94,10 +96,21 @@ export default function Coins() {
   //   // axios 방법
   //   // getCoin();
   // }, []);
+
+  //======================================
+  //useSetRecoilState=> 전역 값을 바꾸는 함수
+  //useSetRecoilState의 반환 값을 받은 setterFn 은 useState와 같이 동작한다 (prev) => !prev 가능
+  // const setterFn = useSetRecoilState(isDarkAtom);
+
+  //동작 함수를 좀더 이쁘게 만들기
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
+
   return (
     <Container>
       <Header>
         <Title>Coin</Title>
+        <button onClick={toggleDarkAtom}>Toggle Mode</button>
       </Header>
       <CoinsList>
         {isLoading ? (

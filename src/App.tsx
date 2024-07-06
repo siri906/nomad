@@ -71,6 +71,7 @@ a {
 `;
 
 export default function App() {
+  // atom은 독립적이야!
   // 전역 값에 접근할거야 = useRecoilVale
   // 전역 값 = isDarkAtom / 우리가 접근할 값을 value 안에 넣는다
   // 전역 값 사용하는 함수 , 전역 값 둘다 import 해야한다
