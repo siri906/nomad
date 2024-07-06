@@ -2,6 +2,8 @@ import { useOutletContext } from "react-router-dom";
 import { fetchChartData } from "../api";
 import { useQuery } from "@tanstack/react-query";
 import ReactApexChart from "react-apexcharts";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "../atom";
 
 interface ChartProps {
   coinId: string;
@@ -25,7 +27,7 @@ export default function Charts() {
     queryKey: ["chartsInfo", coinId],
     queryFn: () => fetchChartData(coinId),
   });
-  console.log(data);
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <div>
       {isLoading ? (
@@ -35,7 +37,7 @@ export default function Charts() {
           <ReactApexChart
             options={{
               theme: {
-                mode: "dark",
+                mode: isDark ? "dark" : "light",
               },
               chart: {
                 height: 350,

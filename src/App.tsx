@@ -5,6 +5,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atom";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -69,6 +71,10 @@ a {
 `;
 
 export default function App() {
+  // 전역 값에 접근할거야 = useRecoilVale
+  // 전역 값 = isDarkAtom / 우리가 접근할 값을 value 안에 넣는다
+  // 전역 값 사용하는 함수 , 전역 값 둘다 import 해야한다
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
       <HelmetProvider>
@@ -76,7 +82,7 @@ export default function App() {
           <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" />
         </Helmet>
       </HelmetProvider>
-      <ThemeProvider theme={false ? darkTheme : lightTheme}>
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
         <Router />
       </ThemeProvider>
