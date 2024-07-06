@@ -1,12 +1,10 @@
-import Router from "./router";
 import { createGlobalStyle } from "styled-components";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./atom";
+import TodoList from "./ToDoList";
+import TodoListAfter from "./TodoListAfter";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -80,6 +78,10 @@ export default function App() {
       </HelmetProvider>
       <ThemeProvider theme={darkTheme}>
         <GlobalStyle />
+        <h2>todolist before</h2>
+        <TodoList />
+        <h2>todolist After</h2>
+        <TodoListAfter />
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </>
