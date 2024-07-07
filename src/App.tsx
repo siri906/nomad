@@ -7,6 +7,8 @@ import Router from "./router";
 import "./scss/design.scss";
 import { Suspense } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkAtom } from "./atom";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -70,6 +72,9 @@ a {
 `;
 
 export default function App() {
+  const isDark = useRecoilValue(isDarkAtom);
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   return (
     <>
       <HelmetProvider>
@@ -77,8 +82,11 @@ export default function App() {
           <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" />
         </Helmet>
       </HelmetProvider>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
+        {/* <header>
+          <button onClick={toggleDarkAtom}>mode Change</button>
+        </header> */}
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#525252">
           <Router />
         </SkeletonTheme>

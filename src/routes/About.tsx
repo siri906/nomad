@@ -1,3 +1,9 @@
+import DetailInfo from "../components/DetailInfo";
+
 export default function About() {
-  return <div></div>;
+  return (
+    <div>
+      <DetailInfo />
+    </div>
+  );
 }

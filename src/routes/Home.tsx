@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MainInfo from "../components/MainInfo";
 import useQueryCharList from "../service/queryFn/useQueryCharList";
 import { DisneyList } from "../types/DisneyInfoData";
@@ -8,7 +8,7 @@ export default function Home() {
   const [sliceCount, setSliceCount] = useState(0);
   const { data, isSuccess, isLoading } = useQueryCharList(sliceCount);
   const charListData: DisneyList[] = isSuccess ? data : [];
-  const { ref, inView, entry } = useInView({
+  const { ref, inView } = useInView({
     threshold: 1,
   });
 
@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <div>
       <MainInfo charListData={charListData} isLoading={isLoading} />
-      <div ref={ref} className="line" style={{ height: "150px" }} />
+      <div ref={ref} className="line" style={{ height: "200px" }} />
     </div>
   );
 }
