@@ -1,0 +1,30 @@
+.list_char {
+  display: flex;
+  flex-wrap: wrap;
+  > li {
+    display: flex;
+    text-align: center;
+    width: 20%;
+    margin: 2.5%;
+    padding: 1rem;
+    border-radius: 30px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    a {
+      display: flex;
+      flex-direction: column;
+      align-content: space-between;
+      width: 100%;
+      padding: 0.5rem;
+      color: #2b2b2b;
+    }
+    .name {
+      margin-top: 10px;
+    }
+  }
+}
+
+.list_skeleton {
+  width: 100%;
+  padding: 0.5rem;
+}

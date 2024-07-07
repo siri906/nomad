@@ -3,8 +3,10 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
-import TodoList from "./ToDoList";
-import TodoListAfter from "./TodoListAfter";
+import Router from "./router";
+import "./scss/design.scss";
+import { Suspense } from "react";
+import { SkeletonTheme } from "react-loading-skeleton";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -64,7 +66,6 @@ body {
 }
 a {
   text-decoration:none;
-
 }
 `;
 
@@ -78,10 +79,9 @@ export default function App() {
       </HelmetProvider>
       <ThemeProvider theme={darkTheme}>
         <GlobalStyle />
-        <h2>todolist before</h2>
-        <TodoList />
-        <h2>todolist After</h2>
-        <TodoListAfter />
+        <SkeletonTheme baseColor="#8b8b8b" highlightColor="#525252">
+          <Router />
+        </SkeletonTheme>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </>

@@ -2,13 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { disneyApi } from "../api/api";
 import disneyInfoKeys from "../queryKey";
 
-const useQueryList = (id: number) => {
+const useQueryCharDetail = (id: number) => {
   return useQuery({
-    queryKey: disneyInfoKeys.listInfoList(id),
-    queryFn: () => disneyApi.disneyList(),
+    queryKey: disneyInfoKeys.detailInfoList(id),
+    queryFn: () => disneyApi.disneyDetailList(id),
     refetchOnWindowFocus: false,
     refetchOnMount: true,
   });
 };
 
-export default useQueryList;
+export default useQueryCharDetail;
