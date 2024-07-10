@@ -86,6 +86,15 @@ const Box = styled(motion.div)`
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
+const 애니 = {
+  시작: { scale: 0 },
+  끝: {
+    scale: 1,
+    rotateZ: "360deg",
+    transition: { damping: 10, type: "spring" },
+  },
+};
+
 export default function App() {
   return (
     <>
@@ -102,9 +111,12 @@ export default function App() {
         <Wrapper>
           {/* initial => 해당 element 의 초기값 */}
           <Box
-            initial={{ scale: 0 }}
-            transition={{ damping: 10, type: "spring" }} //이건 초기값=> 결과값을 수정하는거
-            animate={{ scale: 1, rotateZ: "360deg" }} // 이건 결과값
+            variants={애니}
+            initial="시작"
+            animate="끝"
+            // initial={}
+            // transition={} //이건 초기값=> 결과값을 수정하는거
+            // animate={{}} // 이건 결과값
           />
         </Wrapper>
       </ThemeProvider>
