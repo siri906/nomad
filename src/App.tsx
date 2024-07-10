@@ -3,8 +3,8 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
-import TodoList from "./ToDoList";
-import TodoListAfter from "./TodoListAfter";
+import styled from "styled-components";
+import { motion } from "framer-motion";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -59,7 +59,8 @@ table {
 }
 body {
   font-family: 'Source Sans Pro', sans-serif;
-  background-color:${(props) => props.theme.bgColor};
+  // background-color:${(props) => props.theme.bgColor};
+  background:linear-gradient(135deg,#e09,#d0e);
   color:${(props) => props.theme.textColor}
 }
 a {
@@ -68,20 +69,44 @@ a {
 }
 `;
 
+const Wrapper = styled.div`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
+const Box = styled(motion.div)`
+  width: 200px;
+  height: 200px;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+
 export default function App() {
   return (
     <>
       <HelmetProvider>
         <Helmet>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+          />
         </Helmet>
       </HelmetProvider>
       <ThemeProvider theme={darkTheme}>
         <GlobalStyle />
-        <h2>todolist before</h2>
-        <TodoList />
-        <h2>todolist After</h2>
-        <TodoListAfter />
+        <Wrapper>
+          {/* initial => 해당 element 의 초기값 */}
+          <Box
+            initial={{ scale: 0 }}
+            transition={{ damping: 10, type: "spring" }} //이건 초기값=> 결과값을 수정하는거
+            animate={{ scale: 1, rotateZ: "360deg" }} // 이건 결과값
+          />
+        </Wrapper>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </>
