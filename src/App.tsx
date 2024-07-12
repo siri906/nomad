@@ -126,7 +126,9 @@ const 박스애니 = {
       type: "spring",
       duration: 0.5,
       bounce: 0.5,
+      //delayChildren: 딜레이 시간(초) 후에 하위 애니메이션이 시작됩니다.
       delayChildren: 0.5,
+      //staggerChildren이 0.01이면 첫 번째 자식은 0초, 두 번째 자식은 0.01초, 세 번째 자식은 0.02초 지연되는 식입니다. 계산된 stagger 딜레이가 delayChildren에 추가됩니다
       staggerChildren: 0.2,
     },
   },
