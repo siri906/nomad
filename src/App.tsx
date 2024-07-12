@@ -5,6 +5,7 @@ import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useRef } from "react";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -105,6 +106,17 @@ const Circle = styled(motion.div)`
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
+const BiggerBox = styled.div`
+  width: 600px;
+  height: 600px;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  overflow: hidden;
+`;
+
 const 애니 = {
   시작: { scale: 0 },
   끝: {
@@ -145,7 +157,19 @@ const 원애니 = {
   },
 };
 
+const 이벤트애니 = {
+  오버: {
+    scale: 1.5,
+    rotateZ: 90,
+  },
+  클릭: {
+    scale: 0.7,
+    borderRadius: "50%",
+  },
+};
+
 export default function App() {
+  const biggerRef = useRef<HTMLDivElement>(null);
   return (
     <>
       <HelmetProvider>
@@ -165,12 +189,24 @@ export default function App() {
             // transition={} //이건 초기값=> 결과값을 수정하는거
             // animate={{}} // 이건 결과값
           /> */}
-          <Box1 variants={박스애니} initial="시작" animate="끝">
+          {/* <Box1 variants={박스애니} initial="시작" animate="끝">
             <Circle variants={원애니} />
             <Circle variants={원애니} />
             <Circle variants={원애니} />
             <Circle variants={원애니} />
-          </Box1>
+          </Box1> */}
+
+          {/* dragSnapToOrigin: boolean
+            true인 경우 드래그 가능한 요소는 드래그를 놓을 때, 원점으로 다시 애니메이션됩니다.
+            dragSnapToOrigin={true}
+
+            dragElastic: DragElastic
+            외부 제약 조건에서 허용되는 이동 정도. 0 = 움직임 없음, 1 = 전체 움직임. 기본적으로 0.5로 설정됩니다. 움직임을 비활성화하기 위해 false로 설정할 수도 있습니다.
+            dragElastic={0.2} */}
+
+          <BiggerBox ref={biggerRef}>
+            <Box drag dragConstraints={biggerRef} variants={이벤트애니} whileHover="오버" whileTap="클릭" />
+          </BiggerBox>
         </Wrapper>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
