@@ -86,6 +86,25 @@ const Box = styled(motion.div)`
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
+const Box1 = styled(motion.div)`
+  width: 200px;
+  height: 200px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+
+const Circle = styled(motion.div)`
+  background-color: white;
+  height: 70px;
+  width: 70px;
+  place-self: center;
+  border-radius: 35px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+
 const 애니 = {
   시작: { scale: 0 },
   끝: {
@@ -95,29 +114,61 @@ const 애니 = {
   },
 };
 
+const 박스애니 = {
+  시작: {
+    opacity: 0,
+    scale: 0.5,
+  },
+  끝: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "spring",
+      duration: 0.5,
+      bounce: 0.5,
+      delayChildren: 0.5,
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const 원애니 = {
+  시작: {
+    opacity: 0,
+    y: 10,
+  },
+  끝: {
+    opacity: 1,
+    y: 0,
+  },
+};
+
 export default function App() {
   return (
     <>
       <HelmetProvider>
         <Helmet>
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-          />
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" />
         </Helmet>
       </HelmetProvider>
       <ThemeProvider theme={darkTheme}>
         <GlobalStyle />
         <Wrapper>
           {/* initial => 해당 element 의 초기값 */}
-          <Box
+          {/* <Box
             variants={애니}
             initial="시작"
             animate="끝"
             // initial={}
             // transition={} //이건 초기값=> 결과값을 수정하는거
             // animate={{}} // 이건 결과값
-          />
+          /> */}
+          <Box1 variants={박스애니} initial="시작" animate="끝">
+            <Circle variants={원애니} />
+            <Circle variants={원애니} />
+            <Circle variants={원애니} />
+            <Circle variants={원애니} />
+          </Box1>
         </Wrapper>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
