@@ -77,7 +77,8 @@ const logoAction = {
 
 export default function Header() {
   const homeMatch = useMatch("/");
-  const tvMatch = useMatch("/tv");
+  const tvMatch = useMatch("tv");
+
   return (
     <Nav>
       <Col>
@@ -102,13 +103,11 @@ export default function Header() {
           <Item>
             <Link to={"/"}>
               Home
-              <Circle />
+              {homeMatch && <Circle />}
             </Link>
           </Item>
           <Item>
-            <Link to={"/tv"}>
-              Tv show <Circle />
-            </Link>
+            <Link to={"/tv"}>Tv show {tvMatch && <Circle />}</Link>
           </Item>
         </Items>
       </Col>
