@@ -70,12 +70,23 @@ const rowAni = {
   },
 };
 
+const offset = 6;
+
 export default function Home() {
   const { data, isLoading, isSuccess } = useQueryMovies();
   const moviesData: MovieDataInfo = isSuccess ? data : [];
   const [index, setIndex] = useState(0);
-  const increaseIdx = () => setIndex((prev) => prev + 1);
+  const [leaving, setLeaving] = useState(false);
+  const increaseIdx = () => {
+    if (leaving) {
+      return;
+    } else {
+      toggleLeaving();
+      setIndex((prev) => prev + 1);
+    }
+  };
 
+  const toggleLeaving = () => setLeaving((prev) => !prev);
   return (
     <Wrapper>
       {isLoading ? (
@@ -87,11 +98,14 @@ export default function Home() {
             <Overview>{moviesData.results[0].overview}</Overview>
           </Banner>
           <Slider>
-            <AnimatePresence>
+            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row key={index} variants={rowAni} initial="hidden" animate="visible" exit="exit" transition={{ type: "tween", duration: 0.5 }}>
-                {[1, 2, 3, 4, 5, 6].map((item, idx) => {
-                  return <Box>{item}</Box>;
-                })}
+                {moviesData.results
+                  .slice(1)
+                  .slice(offset * index, offset * index + offset)
+                  .map((item, idx) => {
+                    return <Box key={idx}>{item.title}</Box>;
+                  })}
               </Row>
             </AnimatePresence>
           </Slider>
