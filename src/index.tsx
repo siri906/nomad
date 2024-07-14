@@ -7,6 +7,7 @@ import { RecoilRoot } from "recoil";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { theme } from "./theme";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -62,9 +63,9 @@ table {
 body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
-  color:black;
+  color:${(props) => props.theme.white.darker};
   line-height: 1.2;
-  
+  background-color: #000;
 }
 a {
   text-decoration:none;
@@ -87,11 +88,11 @@ root.render(
               <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" />
             </Helmet>
           </HelmetProvider>
-
           <GlobalStyle />
           <App />
         </ThemeProvider>
       </RecoilRoot>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>
 );
