@@ -2,7 +2,7 @@ import styled from "styled-components";
 import useQueryMovies from "../service/query/useQueryMovies";
 import { MovieDataInfo } from "../types/movieType";
 import { makeImagePath } from "../utills";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, delay, motion, px } from "framer-motion";
 import { useState } from "react";
 
 const Wrapper = styled.div`
@@ -17,13 +17,13 @@ const Loader = styled.div`
   align-items: center;
 `;
 
-const Banner = styled.div<{ bgPhoto: string }>`
+const Banner = styled.div<{ $bgPhoto: string }>`
   display: flex;
   height: 100vh;
   flex-direction: column;
   justify-content: center;
   padding: 60px;
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)), url(${(props) => props.bgPhoto}) no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)), url(${(props) => props.$bgPhoto}) no-repeat;
   background-size: cover;
 `;
 
@@ -50,12 +50,34 @@ const Row = styled(motion.div)`
   width: 100%;
   margin-bottom: 10px;
   grid-template-columns: repeat(6, 1fr);
+  padding-bottom: 200px;
 `;
 
-const Box = styled(motion.div)`
+const Box = styled(motion.div)<{ $bgPhoto: string }>`
   color: #000;
-  background: #fff;
+  background: url(${(props) => props.$bgPhoto}) #fff no-repeat;
+  background-size: cover;
   height: 200px;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform-origin: center right;
+  }
+`;
+
+const Info = styled(motion.div)`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  color: ${(props) => props.theme.white.lighter};
+  background: ${(props) => props.theme.black.lighter};
+  opacity: 0;
+  h4 {
+    font-size: 18px;
+    text-align: center;
+  }
 `;
 
 const rowAni = {
@@ -70,6 +92,32 @@ const rowAni = {
   },
 };
 
+const boxAni = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.3,
+    y: -50,
+    zIndex: 100,
+    transition: {
+      delay: 0.5,
+      duration: 0.3,
+      type: "tween",
+    },
+  },
+};
+
+const infoAni = {
+  hover: {
+    opacity: 1,
+    transition: {
+      delay: 0.5,
+      duration: 0.3,
+      type: "tween",
+    },
+  },
+};
 const offset = 6;
 
 export default function Home() {
@@ -82,7 +130,11 @@ export default function Home() {
       return;
     } else {
       toggleLeaving();
-      setIndex((prev) => prev + 1);
+      const totalMovie = moviesData.results.length - 1;
+      const maxIndex = Math.floor(totalMovie / offset) - 1;
+      setIndex((prev) => {
+        return prev === maxIndex ? 0 : prev + 1;
+      });
     }
   };
 
@@ -93,7 +145,7 @@ export default function Home() {
         <Loader>Loading</Loader>
       ) : (
         <>
-          <Banner onClick={increaseIdx} bgPhoto={makeImagePath(moviesData.results[0].backdrop_path)}>
+          <Banner onClick={increaseIdx} $bgPhoto={makeImagePath(moviesData.results[0].backdrop_path)}>
             <Title>{moviesData.results[0].title}</Title>
             <Overview>{moviesData.results[0].overview}</Overview>
           </Banner>
@@ -103,8 +155,14 @@ export default function Home() {
                 {moviesData.results
                   .slice(1)
                   .slice(offset * index, offset * index + offset)
-                  .map((item, idx) => {
-                    return <Box key={idx}>{item.title}</Box>;
+                  .map((movie, idx) => {
+                    return (
+                      <Box whileHover="hover" initial="normal" variants={boxAni} key={movie.id} transition={{ type: "tween" }} $bgPhoto={makeImagePath(movie.backdrop_path, "w500")}>
+                        <Info variants={infoAni}>
+                          <h4>{movie.title}</h4>
+                        </Info>
+                      </Box>
+                    );
                   })}
               </Row>
             </AnimatePresence>

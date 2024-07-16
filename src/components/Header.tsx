@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { motion, useInView, useMotionValueEvent, useScroll, useAnimation } from "framer-motion";
+import { motion, useMotionValueEvent, useScroll, useAnimation } from "framer-motion";
 import { Link, useMatch } from "react-router-dom";
 import { useState } from "react";
 const Nav = styled(motion.nav)`
@@ -91,6 +91,15 @@ const logoAction = {
   },
 };
 
+const navVariants = {
+  top: {
+    backgroundColor: "rgba(0, 0, 0, 0)",
+  },
+  scroll: {
+    backgroundColor: "rgba(0, 0, 0, 1)",
+  },
+};
+
 export default function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const homeMatch = useMatch("/");
@@ -99,17 +108,19 @@ export default function Header() {
   const useNavAni = useAnimation();
   const openSearch = () => setSearchOpen((prev) => !prev);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 5) {
-      useNavAni.start({
-        backgroundColor: "rgba(0, 0, 0, 1)",
-      });
-    } else {
-      useNavAni.start({
-        backgroundColor: "rgba(0, 0, 0, 0)",
-      });
-    }
-  });
+  console.log("===================== 수정 필요=========");
+  // useMotionValueEvent(scrollY, "change", (latest) => {
+  //   console.log(latest);
+  //   if (latest > 1) {
+  //     useNavAni.start({
+  //       backgroundColor: "rgba(0, 0, 0, 1)",
+  //     });
+  //   } else {
+  //     useNavAni.start({
+  //       backgroundColor: "rgba(0, 0, 0, 0)",
+  //     });
+  //   }
+  // });
 
   return (
     <Nav animate={useNavAni} initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}>
