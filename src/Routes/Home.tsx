@@ -101,6 +101,7 @@ const MovieDetail = styled(motion.div)`
   left: 0;
   right: 0;
   margin: "0 auto";
+  background: ${(props) => props.theme.black.lighter};
 `;
 
 const rowAni = {
@@ -153,6 +154,11 @@ export default function Home() {
   const moviesData: MovieDataInfo = isSuccess ? data : [];
 
   console.log(bigMovieMatch, "bigMovieMatch");
+  const clickMovie =
+    bigMovieMatch?.params.movieId &&
+    moviesData?.results?.find(
+      (movie) => movie.id === Number(bigMovieMatch.params.movieId)
+    );
 
   const increaseIdx = () => {
     if (leaving) {
@@ -174,6 +180,7 @@ export default function Home() {
   const overlayClick = () => {
     navigate(`/`);
   };
+
   return (
     <Wrapper>
       {isLoading ? (
@@ -230,7 +237,11 @@ export default function Home() {
                   exit={{ opacity: 0 }}
                 />
                 <MovieDetail layoutId={bigMovieMatch.params.movieId + ""}>
-                  test
+                  {clickMovie && (
+                    <>
+                      <h2>{clickMovie.title}</h2>
+                    </>
+                  )}
                 </MovieDetail>
               </>
             ) : null}
