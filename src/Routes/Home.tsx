@@ -4,6 +4,7 @@ import { MovieDataInfo } from "../types/movieType";
 import { makeImagePath } from "../utills";
 import { AnimatePresence, delay, motion, px } from "framer-motion";
 import { useState } from "react";
+import { useMatch, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   background: #000;
@@ -23,7 +24,8 @@ const Banner = styled.div<{ $bgPhoto: string }>`
   flex-direction: column;
   justify-content: center;
   padding: 60px;
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)), url(${(props) => props.$bgPhoto}) no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)),
+    url(${(props) => props.$bgPhoto}) no-repeat;
   background-size: cover;
 `;
 
@@ -64,6 +66,7 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
   &:last-child {
     transform-origin: center right;
   }
+  cursor: pointer;
 `;
 
 const Info = styled(motion.div)`
@@ -121,10 +124,16 @@ const infoAni = {
 const offset = 6;
 
 export default function Home() {
-  const { data, isLoading, isSuccess } = useQueryMovies();
-  const moviesData: MovieDataInfo = isSuccess ? data : [];
+  const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
+  const bigMovieMatch = useMatch("/movie/:movieId");
+
+  const { data, isLoading, isSuccess } = useQueryMovies();
+  const moviesData: MovieDataInfo = isSuccess ? data : [];
+
+  console.log(bigMovieMatch, "bigMovieMatch");
+
   const increaseIdx = () => {
     if (leaving) {
       return;
@@ -139,25 +148,47 @@ export default function Home() {
   };
 
   const toggleLeaving = () => setLeaving((prev) => !prev);
+  const onBoxClick = (movieId: number) => {
+    navigate(`/movie/${movieId}`);
+  };
   return (
     <Wrapper>
       {isLoading ? (
         <Loader>Loading</Loader>
       ) : (
         <>
-          <Banner onClick={increaseIdx} $bgPhoto={makeImagePath(moviesData.results[0].backdrop_path)}>
+          <Banner
+            onClick={increaseIdx}
+            $bgPhoto={makeImagePath(moviesData.results[0].backdrop_path)}
+          >
             <Title>{moviesData.results[0].title}</Title>
             <Overview>{moviesData.results[0].overview}</Overview>
           </Banner>
           <Slider>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-              <Row key={index} variants={rowAni} initial="hidden" animate="visible" exit="exit" transition={{ type: "tween", duration: 0.5 }}>
+              <Row
+                key={index}
+                variants={rowAni}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ type: "tween", duration: 0.5 }}
+              >
                 {moviesData.results
                   .slice(1)
                   .slice(offset * index, offset * index + offset)
                   .map((movie, idx) => {
                     return (
-                      <Box whileHover="hover" initial="normal" variants={boxAni} key={movie.id} transition={{ type: "tween" }} $bgPhoto={makeImagePath(movie.backdrop_path, "w500")}>
+                      <Box
+                        onClick={() => onBoxClick(movie.id)}
+                        whileHover="hover"
+                        initial="normal"
+                        variants={boxAni}
+                        key={movie.id}
+                        transition={{ type: "tween" }}
+                        $bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                        layoutId={movie.id + ""}
+                      >
                         <Info variants={infoAni}>
                           <h4>{movie.title}</h4>
                         </Info>
@@ -167,6 +198,25 @@ export default function Home() {
               </Row>
             </AnimatePresence>
           </Slider>
+          <AnimatePresence>
+            {bigMovieMatch !== null ? (
+              <motion.div
+                layoutId={bigMovieMatch.params.movieId + ""}
+                style={{
+                  position: "absolute",
+                  width: "40vw",
+                  height: "80vh",
+                  backgroundColor: "#fff",
+                  top: 50,
+                  left: 0,
+                  right: 0,
+                  margin: "0 auto",
+                }}
+              >
+                test
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </>
       )}
     </Wrapper>
