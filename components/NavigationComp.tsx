@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 export default function NavigationComp() {
   const path = usePathname();
-  console.log(path, " test"); // console.log 찍으면 서버쪽에서 된다 [음 근데 이전에는 .... 클라쪽에서 확인이 됐는데 왜지..?  => 'use client' 지시문을 사용하여 console.log를 출력하면 로그가 클라이언트와 서버 모두에 출력됩니다.]
+  // console.log(path, " test"); // console.log 찍으면 서버쪽에서 된다 [음 근데 이전에는 .... 클라쪽에서 확인이 됐는데 왜지..?  => 'use client' 지시문을 사용하여 console.log를 출력하면 로그가 클라이언트와 서버 모두에 출력됩니다.]
   return (
     <nav>
       <ul>
