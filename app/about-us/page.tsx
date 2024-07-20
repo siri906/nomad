@@ -1,10 +1,7 @@
-import NavigationComp from "../../components/NavigationComp";
+export const metadata = {
+  title: "About",
+};
 
 export default function AboutUs() {
-  return (
-    <div>
-      <NavigationComp />
-      about
-    </div>
-  );
+  return <div>about</div>;
 }
