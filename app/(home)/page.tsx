@@ -1,19 +1,19 @@
-"use client";
+import { Metadata } from "next";
+import React from "react";
 
-import React, { useEffect, useState } from "react";
+export const metadata: Metadata = {
+  title: "home",
+};
 
-// swr 이란...? 알아보기
-export default function Page() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [movies, setMovies] = useState([]);
-  const getMovies = async () => {
-    const res = await fetch("https://nomad-movies.nomadcoders.workers.dev/movies");
-    const json = await res.json();
-    setMovies(json);
-    setIsLoading(false);
-  };
-  useEffect(() => {
-    getMovies();
-  }, []);
-  return <div>{isLoading ? <div>loading</div> : JSON.stringify(movies)}</div>;
+const URL = "https://nomad-movies.nomadcoders.workers.dev/movies";
+
+async function getMovie() {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+  const data = fetch(URL).then((resultData) => resultData.json());
+  return data;
+}
+
+export default async function Home() {
+  const movies = await getMovie();
+  return <div>{JSON.stringify(movies)}</div>;
 }
